@@ -18,8 +18,9 @@ oberArm = AngularServo(5, min_angle=-90, max_angle=90, min_pulse_width=0.0006, m
 
 @app.post("/move")
 async def get_body(request: Request):
+    if not request:
+      return {"error": "Fehlendes JSON"}
     positions = await request.json()
-
     X = positions['col']
     Y = positions['row']
     goto(x=X, y=Y)
@@ -33,7 +34,6 @@ async def get_body(request: Request):
 # Mapping von reellen Feldern (x,y) auf 3er Paar von ausgemessenen Winkeln, für die Stellung der ServoMotoren
 def getPositionAngles(x, y):
   return lookupTable[x][y]
-
 
 # Mithilfe des Mapping ausgeführte Bewegung. Gehe zum Punkt X,Y
 def goto(x, y):
@@ -63,4 +63,3 @@ def reset():
   unterArm.angle = -90
   finger.angle = 90
   stift.angle = -90
-
