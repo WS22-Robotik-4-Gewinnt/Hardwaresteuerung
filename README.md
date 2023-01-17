@@ -7,6 +7,16 @@ Mitwirkende:
 
 ## Hardware Aufbau
 - Roboterarm mit 4 Servomotoren (Servos werden gemäß ihrer Position/Wirkung bezeichnet: **Schulter**/Oberarm, **Ellenbogen**/Unterarm, **Handgelenk**/Hand und Finger/**Stift**)
+- Liegendes Spielfeld A4-Blatt mit 7x6 Raster unter Plexiglasscheibe
+- Steckbrett
+- Raspberry Pi (3B) & Netzkabel
+- Labornetzteil
+- Knopf (Zugende)
+- Stift
+
+TODO: Skizze?
+TODO: Schaltplan
+
 ## Datenstruktur
 Das Spielfeld der Hardwaresteuerung wird als ein zweidimensionales Array dargestellt, welches bei 0 beginnt! Demnach muss von dem Input der Spiellogik -1 genommen werden (col 1 in Spielalgorithmus ist 0 in Hardwaresteuerung).
 
