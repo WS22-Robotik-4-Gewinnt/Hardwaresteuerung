@@ -1,6 +1,8 @@
 # Hardwaresteuerung
 
 ## Datenstruktur
+Das Spielfeld der Hardwaresteuerung wird als ein zweidimensionales Array dargestellt, welches bei 0 beginnt! Demnach muss von dem Input der Spiellogik -1 genommen werden (col 1 in Spielalgorithmus ist 0 in Hardwaresteuerung).
+
 ### Spielfeld 7x6
 ```
 6 0  0  0  0  0  0  0
@@ -28,6 +30,7 @@
 ```
 
 ### Übertragung Spielalgorithmus -> Hardwaresteuerung
+Hier ist für die Indizes des HW-Spielfeld-Arrays jeweils -1 zu rechnen:
 ```json
 {
  "col": 7,
