@@ -3,10 +3,14 @@ from gpiozero import AngularServo, Button, Device
 from gpiozero.pins.pigpio import PiGPIOFactory
 from time import sleep
 from fastapi import FastAPI, Request
-import requests
+from pydantic import BaseModel
+
+class Positions(BaseModel):
+  col: int
+  row: int
 
 app = FastAPI()
-Device.pin_factory = PiGPIOFactory()
+# Device.pin_factory = PiGPIOFactory()
 
 lookupTable = [[[-20, 55, 2], [-37, 80, -2], [-50, 85, 23], [-59, 86, 43], [-64, 87, 60], [-68, 87, 75]],
                [[-32, 58, 10], [-48, 80, 12], [-61, 85, 32], [-69, 86, 50], [-77, 87, 66], [-83, 88, 80]],
@@ -22,19 +26,15 @@ unterArm = AngularServo(19, min_angle=90, max_angle=-90, min_pulse_width=0.0006,
 oberArm = AngularServo(5, min_angle=-90, max_angle=90, min_pulse_width=0.0006, max_pulse_width= 0.0024, initial_angle=-90) #1
 
 @app.post("/move")
-async def get_body(request: Request):
-    if not request:
-      return {"error": "Fehlendes JSON"}
-    positions = await request.json()
-    X = positions['col']
-    Y = positions['row']
-    goto(x=X, y=Y)
-    sleep(1)
-    down(getOffset(y=Y))
-    sleep(1)
-    up()
-    sleep(0.5)
-    reset()
+async def get_body(positions: Positions):
+    # goto(x=positions.col, y=positions.y)
+    print(f"col: {positions.col}, row: {positions.col}")
+    # sleep(1)
+    # down(getOffset(y=positions.y))
+    # sleep(1)
+    # up()
+    # sleep(0.5)
+    # reset()
 
 @app.post("/end")
 async def endGame(request: Request):
