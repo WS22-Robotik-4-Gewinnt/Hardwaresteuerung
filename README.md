@@ -14,8 +14,16 @@ Mitwirkende:
 - Knopf (Zugende)
 - Stift
 
-TODO: Skizze?
-TODO: Schaltplan
+**Aufbauskizze:**
+
+![Aufbauskizze](https://github.com/WS22-Robotik-4-Gewinnt/Hardwaresteuerung/blob/main/assets/images/Aufbauskizze.png?raw=true)
+
+**Aufbau Photo:**
+
+![Aufbau abfotografiert](https://github.com/WS22-Robotik-4-Gewinnt/Hardwaresteuerung/blob/main/assets/images/Robotik%20Roboarm%20Aufbau.jpeg?raw=true)
+
+
+TODO: Schaltplan hinzufügen
 
 ## Logindaten PI:
 ```
