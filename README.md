@@ -1,5 +1,11 @@
 # Hardwaresteuerung
 
+## Logindaten PI:
+```
+username: pi
+password: asdf1234
+```
+
 ## Datenstruktur
 ### Spielfeld 7x6
 ```
@@ -33,4 +39,8 @@
  "col": 7,
  "row": 1
 }
+```
+### Fast API starten
+```commandline
+uvicorn main:app --reload --host 0.0.0.0 --port 8096
 ```
