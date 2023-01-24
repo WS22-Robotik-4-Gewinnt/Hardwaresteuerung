@@ -14,8 +14,16 @@ Mitwirkende:
 - Knopf (Zugende)
 - Stift
 
-TODO: Skizze?
-TODO: Schaltplan
+**Aufbauskizze:**
+
+![Aufbauskizze](https://github.com/WS22-Robotik-4-Gewinnt/Hardwaresteuerung/blob/main/assets/images/Aufbauskizze.png?raw=true)
+
+**Aufbau Photo:**
+
+![Aufbau abfotografiert](https://github.com/WS22-Robotik-4-Gewinnt/Hardwaresteuerung/blob/main/assets/images/Robotik%20Roboarm%20Aufbau.jpeg?raw=true)
+
+
+TODO: Schaltplan hinzufügen
 
 ## Logindaten PI:
 ```
@@ -40,17 +48,6 @@ Das Spielfeld der Hardwaresteuerung wird als ein zweidimensionales Array dargest
 ```
 
 ## Schnittstellen / Kommunikation
-###  Bildverarbeitung -> Spielalgorithmus
-```json
-{ "Column1": {"Row1":"h", "Row2":"0", "Row3":"0", "Row4":"0", "Row5":"0", "Row6":"0"},
-"Column2": {"Row1":"0", "Row2":"0", "Row3":"0", "Row4":"0", "Row5":"0", "Row6":"0"},
-"Column3": {"Row1":"0", "Row2":"0", "Row3":"0", "Row4":"0", "Row5":"0", "Row6":"0"},
-"Column4": {"Row1":"0", "Row2":"0", "Row3":"0", "Row4":"0", "Row5":"0", "Row6":"0"},
-"Column5": {"Row1":"0", "Row2":"0", "Row3":"0", "Row4":"0", "Row5":"0", "Row6":"0"},
-"Column6": {"Row1":"h", "Row2":"h", "Row3":"h", "Row4":"0", "Row5":"0", "Row6":"0"},
-"Column7": {"Row1":"r", "Row2":"r", "Row3":"0", "Row4":"0", "Row5":"0", "Row6":"0"}
-}
-```
 
 ### Übertragung Spielalgorithmus -> Hardwaresteuerung
 ```json
