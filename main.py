@@ -10,7 +10,7 @@ class Positions(BaseModel):
   row: int
 
 app = FastAPI()
-# Device.pin_factory = PiGPIOFactory()
+Device.pin_factory = PiGPIOFactory()
 
 lookupTable = [[[-20, 55, 2], [-37, 80, -2], [-50, 85, 23], [-59, 86, 43], [-64, 87, 60], [-68, 87, 75]],
                [[-32, 58, 10], [-48, 80, 12], [-61, 85, 32], [-69, 86, 50], [-77, 87, 66], [-83, 88, 80]],
