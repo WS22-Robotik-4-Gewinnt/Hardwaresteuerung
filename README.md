@@ -16,9 +16,9 @@ Mitwirkende:
 
 **Aufbauskizze:**
 
-![Aufbauskizze](https://github.com/WS22-Robotik-4-Gewinnt/Hardwaresteuerung/blob/main/assets/images/Aufbauskizze.png?raw=true)
+![Aufbauskizze](https://github.com/WS22-Robotik-4-Gewinnt/Hardwaresteuerung/blob/main/assets/images/Aufbau%20Skizze.png?raw=true)
 
-**Aufbau Photo:**
+**Aufbau Photo (ohne Kamera):**
 
 ![Aufbau abfotografiert](https://github.com/WS22-Robotik-4-Gewinnt/Hardwaresteuerung/blob/main/assets/images/Robotik%20Roboarm%20Aufbau.jpeg?raw=true)
 
@@ -77,8 +77,8 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8096
 13. Programmierung eines Python Skriptes, das Tastatureingaben x (col) und y (row) abfragt, um bereits interaktiv (ohne Computergegner) spielen zu können.
 14. Umsetzung der Steuerung des Roboterarms als REST-Api (FastApi mit ARC als UI) gemäß Vorgaben der Schnittstellenspezifikation.
 15. Zur Verhinderung, dass die Servomotoren gegenseitig "Jitter" erzeugen, wurde die Library Py GPIO Factory eingebaut. Dadurch passen die Winkelkonfigurationen der Servos nicht mehr! Erneute Kalibrierung jedes einzelnen Feldes (Anpassung der Matrix).
-16. 
-17. TODO
+16. Change Request: Spielergebnis soll mit LEDs dargestellt werden. Installation einer LED-Matrix
+17. Integrationstest mit den Modulen Spiellogik und Kamera
 18. 
-19. Change Request: Spielergebnis soll mit LEDs dargestellt werden.
+19. TODO
 20. Change Request: Schwierigkeitsgrad des Computergegners soll per Knopfdruck änderbar sein + Anzeige per LEDs.
