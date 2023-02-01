@@ -64,11 +64,11 @@ async def move(positions: Positions):
   reset()
 
 @app.post("/end")
-async def endGame(winner: Winner):
+def endGame(winner: Winner):
   
     with canvas(virtual) as draw:
       text(draw, (0, 1), winner.winner, fill="white", font=proportional(LCD_FONT))
-    print(f"WINNER IS: {winner['winner']}")
+    print(f"WINNER IS: {winner.winner}")
 
 @app.post("/movePerAngle")
 async def movePerAngle(request: Request):
