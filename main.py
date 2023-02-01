@@ -15,28 +15,28 @@ from luma.core.legacy.font import proportional, CP437_FONT, LCD_FONT
 import json
 import requests
 
+import logging
+
+# logging
+LOG = "logging_data.log"
+logging.basicConfig(filename=LOG, filemode="w", level=logging.DEBUG)
+
+actualFingerAngle = 0
+
 serial = spi(port=0, device=0, gpio=noop())
 device = max7219(serial, width=32, height=8, block_orientation=-90)
-device.contrast(2)
+device.contrast(5)
 virtual = viewport(device, width=32, height=8)
-
-diffi = 4
-
-readyButton = Button(21)
-difficultyButton = Button(26)
-
-dict = {
-  4: 'Leicht',
-  5: 'Mittel',
-  6: 'Schwer'
-}
 
 class Positions(BaseModel):
   col: int
   row: int
+  
+class Winner(BaseModel):
+  winner: str
 
-app = FastAPI()
 Device.pin_factory = PiGPIOFactory()
+app = FastAPI()
 
 lookupTable = [[[-20, 55, 2], [-37, 80, -2], [-50, 85, 23], [-59, 86, 43], [-64, 87, 60], [-68, 87, 75]],
                [[-32, 58, 10], [-48, 80, 12], [-61, 85, 32], [-69, 86, 50], [-77, 87, 66], [-83, 88, 80]],
@@ -52,26 +52,26 @@ unterArm = AngularServo(19, min_angle=90, max_angle=-90, min_pulse_width=0.0006,
 oberArm = AngularServo(5, min_angle=-90, max_angle=90, min_pulse_width=0.0006, max_pulse_width= 0.0024, initial_angle=-90) #1
 
 @app.post("/move")
-async def get_body(positions: Positions):
-    goto(x=positions.col, y=positions.row)
-    # print(f"col: {positions.col}, row: {positions.col}")
-    sleep(1)
-    down(getOffset(y=positions.row))
-    sleep(1)
-    up()
-    sleep(0.5)
-    reset()
+async def move(positions: Positions):
+  goto(x=positions.col, y=positions.row)
+  sleep(1)
+  down(getOffset(y=positions.row))
+  sleep(1)
+  wiggle(finger.angle)
+  sleep(1)
+  up()
+  sleep(0.5)
+  reset()
 
 @app.post("/end")
-async def endGame(request: Request):
-  if not request:
-    return {"error": "Fehlendes JSON"}
-  winner = await request.json()
-  # TODO: print winner on MATRIX LED
-  print(f"WINNER IS: {winner['winner']}")
+async def endGame(winner: Winner):
+  
+    with canvas(virtual) as draw:
+      text(draw, (0, 1), winner.winner, fill="white", font=proportional(LCD_FONT))
+    print(f"WINNER IS: {winner['winner']}")
 
 @app.post("/movePerAngle")
-async def endGame(request: Request):
+async def movePerAngle(request: Request):
   if not request:
     return {"error": "Fehlendes JSON"}
   angles = await request.json()
@@ -116,21 +116,7 @@ def reset():
   finger.angle = 90
   stift.angle = -90
 
-while True:
-  try:
-    if readyButton.is_pressed:
-      difficulty = '{"difficulty": ' + str(diffi) + '}'
-      difficulty = json.loads(difficulty)
-      result = requests.post(f"http://localhost:8090/ready", json=difficulty)
-      print("JSON SEND")
-      sleep(1)
-    if difficultyButton.is_pressed:
-      diffi += 1
-      if diffi > 6:
-        diffi = 4
-      sleep(0.5)
-    with canvas(virtual) as draw:
-      text(draw, (0, 1), dict.get(diffi), fill="white", font=proportional(LCD_FONT))
-
-  except KeyboardInterrupt:
-    GPIO.cleanup()
+def wiggle(fingerAngle: int):
+  finger.angle = fingerAngle + 5
+  sleep(1)
+  finger.angle = fingerAngle - 5
