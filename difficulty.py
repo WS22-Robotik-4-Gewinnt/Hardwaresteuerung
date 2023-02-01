@@ -14,14 +14,16 @@ device = max7219(serial, width=32, height=8, block_orientation=-90)
 device.contrast(5)
 virtual = viewport(device, width=32, height=8)
 
-diffi = 4
+diffi = 1
 readyButton = Button(21)
 difficultyButton = Button(26)
 
 dict = {
-  4: 'Leicht',
-  5: 'Mittel',
-  6: 'Schwer'
+  1: 'Kids',
+  2: 'Leicht',
+  3: 'Mittel',
+  4: 'Schwer',
+  5: '42'  
 }
 
 while True:
@@ -34,8 +36,8 @@ while True:
       sleep(1)
     if difficultyButton.is_pressed:
       diffi += 1
-      if diffi > 6:
-        diffi = 4
+      if diffi > 5:
+        diffi = 1
       sleep(0.5)
     with canvas(virtual) as draw:
       text(draw, (0, 1), dict.get(diffi), fill="white", font=proportional(LCD_FONT))
