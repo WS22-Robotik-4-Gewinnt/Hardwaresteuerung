@@ -23,13 +23,8 @@ Mitwirkende:
 ![Aufbau abfotografiert](https://github.com/WS22-Robotik-4-Gewinnt/Hardwaresteuerung/blob/main/assets/images/Robotik%20Roboarm%20Aufbau.jpeg?raw=true)
 
 
-TODO: Schaltplan hinzufügen
-
-## Logindaten PI:
-```
-username: pi
-password: asdf1234
-```
+## Schaltplan
+![Schaltplan Bild](https://github.com/WS22-Robotik-4-Gewinnt/Hardwaresteuerung/blob/main/assets/images/Schaltplan_Robotik_Pi4_Steckplatine.png?raw=true)
 
 ## Datenstruktur
 Das Spielfeld der Hardwaresteuerung wird als ein zweidimensionales Array dargestellt, welches bei 0 beginnt! Demnach muss von dem Input der Spiellogik -1 genommen werden (col 1 in Spielalgorithmus ist 0 in Hardwaresteuerung).

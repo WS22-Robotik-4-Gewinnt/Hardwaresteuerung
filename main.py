@@ -1,5 +1,6 @@
 import threading
 
+import GPIO as GPIO
 from gpiozero import AngularServo, Button, Device
 from gpiozero.pins.pigpio import PiGPIOFactory
 from fastapi import FastAPI, Request
@@ -113,7 +114,7 @@ def endGame(winner: Winner):
   with canvas(virtual) as draw:
     print(winner.winner)
     text(draw, (0, 1), winner.winner, fill="white", font=proportional(LCD_FONT))
-  sleep(3)
+  sleep(5)
   difficultyThread.run = True
 
 
@@ -172,6 +173,6 @@ def wiggle(fingerAngle: int):
     finger.angle = 90
 
   if fingerAngle >= -85:
-    finger.angle = fingerAngle - 5
+    finger.angle = fingerAngle - 6
   else:
     finger.angle = -90
