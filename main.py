@@ -1,13 +1,10 @@
 import threading
-import json
 
 from gpiozero import AngularServo, Button, Device
 from gpiozero.pins.pigpio import PiGPIOFactory
-from time import sleep
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
-from time import sleep, strftime
-from datetime import datetime
+from time import sleep
 from luma.core.interface.serial import spi, noop
 from luma.core.render import canvas
 from luma.core.virtual import viewport
@@ -40,11 +37,9 @@ device = max7219(serial, width=32, height=8, block_orientation=-90)
 device.contrast(5)
 virtual = viewport(device, width=32, height=8)
 
-
 class Positions(BaseModel):
   col: int
   row: int
-
 
 class Winner(BaseModel):
   winner: str
@@ -53,31 +48,28 @@ class Winner(BaseModel):
 def diffi_Thread():
   global diffi
   t = threading.currentThread()
-  while getattr(t, "run", True):
-    print("THREAD RUNNING")
-    try:
-      if readyButton.is_pressed:
-        difficulty = '{"difficulty": ' + str(diffi) + '}'
-        difficulty = json.loads(difficulty)
-        requests.post("http://localhost:8090/ready", json=difficulty)
-        sleep(1)
-      if difficultyButton.is_pressed:
-        diffi += 1
-        if diffi > 5:
-          diffi = 1
-        sleep(0.5)
-      with canvas(virtual) as draw:
-        text(draw, (0, 1), dict.get(diffi), fill="white", font=proportional(LCD_FONT))
+  while True:
+    while getattr(t, "run", True):
+      try:
+        if readyButton.is_pressed:
+          difficulty = '{"difficulty": ' + str(diffi) + '}'
+          difficulty = json.loads(difficulty)
+          requests.post("http://localhost:8090/ready", json=difficulty)
+          sleep(1)
+        if difficultyButton.is_pressed:
+          diffi += 1
+          if diffi > 5:
+            diffi = 1
+          sleep(0.5)
+        with canvas(virtual) as draw:
+          text(draw, (0, 1), dict.get(diffi), fill="white", font=proportional(LCD_FONT))
 
-    except KeyboardInterrupt:
-      GPIO.cleanup()
-  print("THREAD STOPPED")
-
+      except KeyboardInterrupt:
+        GPIO.cleanup()
 
 
 difficultyThread = threading.Thread(target=diffi_Thread, args=[])
 difficultyThread.start()
-
 
 Device.pin_factory = PiGPIOFactory()
 app = FastAPI()
@@ -116,11 +108,11 @@ async def move(positions: Positions):
 @app.post("/end")
 def endGame(winner: Winner):
   global difficultyThread
-  print("STOP THREAD")
   difficultyThread.run = False
+  sleep(0.5)
   with canvas(virtual) as draw:
     print(winner.winner)
-    text(draw, (0, 1), "ROBO", fill="white", font=proportional(LCD_FONT))
+    text(draw, (0, 1), winner.winner, fill="white", font=proportional(LCD_FONT))
   sleep(3)
   difficultyThread.run = True
 
@@ -143,12 +135,10 @@ async def movePerAngle(request: Request):
 def getPositionAngles(x, y):
   return lookupTable[x][y]
 
-
 # Mithilfe des Mapping ausgeführte Bewegung. Gehe zum Punkt X,Y
 def goto(x, y):
   position = getPositionAngles(x, y)
   gotoRaw(position[0], position[1], position[2])
-
 
 # Gehe zu Oberarm, Unterarm und Finger Winkel
 def gotoRaw(ober, unter, fing):
@@ -156,20 +146,16 @@ def gotoRaw(ober, unter, fing):
   unterArm.angle = unter
   finger.angle = fing
 
-
 # Stift senken
 def down(offset=0):
   stift.angle = -27 - offset
-
 
 # Stift heben
 def up():
   stift.angle = -90
 
-
 def getOffset(y):
   return -0.75 * (6 - y)
-
 
 # Ausgangsposition
 def reset():
@@ -177,7 +163,6 @@ def reset():
   unterArm.angle = -90
   finger.angle = 90
   stift.angle = -90
-
 
 def wiggle(fingerAngle: int):
   if fingerAngle <= 82:
