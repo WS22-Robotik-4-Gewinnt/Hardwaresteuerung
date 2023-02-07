@@ -50,12 +50,20 @@ Das Spielfeld der Hardwaresteuerung wird als ein zweidimensionales Array dargest
 ## Schnittstellen / Kommunikation
 
 ### Übertragung Spielalgorithmus -> Hardwaresteuerung
+**Zug**
 ```json
 {
  "col": 7,
  "row": 1
 }
 ```
+**Spielergebnis**
+```json
+{
+ "winner": "human"
+}
+```
+
 ### Fast API starten
 ```commandline
 uvicorn src.main:app --reload --host 0.0.0.0 --port 8096
