@@ -119,7 +119,7 @@ def endGame(winner: Winner):
   print("STOP THREAD")
   difficultyThread.run = False
   with canvas(virtual) as draw:
-    text(draw, (0, 1), str(winner.winner), fill="white", font=proportional(LCD_FONT))
+    text(draw, (0, 1), "jkhksdbufi", fill="white", font=proportional(LCD_FONT))
   sleep(3)
   difficultyThread.run = True
 
