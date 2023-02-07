@@ -1,7 +1,6 @@
 import threading
 import json
 
-import GPIO as GPIO
 from gpiozero import AngularServo, Button, Device
 from gpiozero.pins.pigpio import PiGPIOFactory
 from time import sleep
