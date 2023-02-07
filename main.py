@@ -76,6 +76,7 @@ async def move(positions: Positions):
 def endGame(winner: Winner):
   with canvas(virtual) as draw:
     text(draw, (0, 1), winner.winner, fill="white", font=proportional(LCD_FONT))
+  sleep(3)
   print(f"WINNER IS: {winner.winner}")
 
 
