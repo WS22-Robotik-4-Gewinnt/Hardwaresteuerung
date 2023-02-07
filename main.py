@@ -112,6 +112,7 @@ async def move(positions: Positions):
 
 @app.post("/end")
 def endGame(winner: Winner):
+  global difficultyThread
   difficultyThread.run = False
   with canvas(virtual) as draw:
     text(draw, (0, 1), str(winner.winner), fill="white", font=proportional(LCD_FONT))
