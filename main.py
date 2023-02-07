@@ -4,6 +4,29 @@ from gpiozero.pins.pigpio import PiGPIOFactory
 from time import sleep
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
+from time import sleep, strftime
+from datetime import datetime
+from luma.core.interface.serial import spi, noop
+from luma.core.render import canvas
+from luma.core.virtual import viewport
+from luma.led_matrix.device import max7219
+from luma.core.legacy import text, show_message
+from luma.core.legacy.font import proportional, CP437_FONT, LCD_FONT
+import json
+import requests
+
+import logging
+
+# logging
+LOG = "logging_data.log"
+logging.basicConfig(filename=LOG, filemode="w", level=logging.DEBUG)
+
+actualFingerAngle = 0
+
+serial = spi(port=0, device=0, gpio=noop())
+device = max7219(serial, width=32, height=8, block_orientation=-90)
+device.contrast(5)
+virtual = viewport(device, width=32, height=8)
 
 
 class Positions(BaseModel):
@@ -37,11 +60,12 @@ oberArm = AngularServo(5, min_angle=-90, max_angle=90, min_pulse_width=0.0006, m
 
 
 @app.post("/move")
-async def get_body(positions: Positions):
+async def move(positions: Positions):
   goto(x=positions.col, y=positions.row)
-  # print(f"col: {positions.col}, row: {positions.col}")
   sleep(1)
   down(getOffset(y=positions.row))
+  sleep(1)
+  wiggle(finger.angle)
   sleep(1)
   up()
   sleep(0.5)
