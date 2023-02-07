@@ -58,7 +58,7 @@ Das Spielfeld der Hardwaresteuerung wird als ein zweidimensionales Array dargest
 ```
 ### Fast API starten
 ```commandline
-uvicorn main:app --reload --host 0.0.0.0 --port 8096
+uvicorn src.main:app --reload --host 0.0.0.0 --port 8096
 ```
 
 ## Projektverlauf
@@ -79,6 +79,9 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8096
 15. Zur Verhinderung, dass die Servomotoren gegenseitig "Jitter" erzeugen, wurde die Library Py GPIO Factory eingebaut. Dadurch passen die Winkelkonfigurationen der Servos nicht mehr! Erneute Kalibrierung jedes einzelnen Feldes (Anpassung der Matrix).
 16. Change Request: Spielergebnis soll mit LEDs dargestellt werden. Installation einer LED-Matrix
 17. Integrationstest mit den Modulen Spiellogik und Kamera
-18. 
-19. TODO
-20. Change Request: Schwierigkeitsgrad des Computergegners soll per Knopfdruck änderbar sein + Anzeige per LEDs.
+18. Für vereinfachte Bilderkennung einrichten, dass statt Punkten, Striche gezeichnet werden
+19. Anschluss der LED Matrix für Anzeige des Schwierigkeitsgrades und des Siegers zum Spielende
+20. Anschluss eines weiteren Knopfes für das Iterieren durch die Schwierigkeitsgrade
+21. "Wiggle" (Striche statt Punkten zeichnen) optimiert
+22. Dockerfile erstellt
+23. Neuinstallation des Systems auf "sauberem" Raspberry Pi
