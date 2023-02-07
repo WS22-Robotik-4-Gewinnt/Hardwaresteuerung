@@ -16,15 +16,15 @@ Mitwirkende:
 
 **Aufbauskizze:**
 
-![Aufbauskizze](https://github.com/WS22-Robotik-4-Gewinnt/Hardwaresteuerung/blob/main/assets/images/Aufbau%20Skizze.png?raw=true)
+![Aufbauskizze](/assets/images/Aufbau%20Skizze.png)
 
 **Aufbau Photo (ohne Kamera):**
 
-![Aufbau abfotografiert](https://github.com/WS22-Robotik-4-Gewinnt/Hardwaresteuerung/blob/main/assets/images/Robotik%20Roboarm%20Aufbau.jpeg?raw=true)
+![Aufbau abfotografiert](/assets/images/Robotik%20Roboarm%20Aufbau.jpeg)
 
 
-## Schaltplan
-![Schaltplan Bild](https://github.com/WS22-Robotik-4-Gewinnt/Hardwaresteuerung/blob/main/assets/images/Schaltplan_Robotik_Pi4_Steckplatine.png?raw=true)
+**Schaltplan:**
+![Schaltplan Bild](/assets/images/Schaltplan_Robotik_Pi4_Steckplatine.png)
 
 ## Datenstruktur
 Das Spielfeld der Hardwaresteuerung wird als ein zweidimensionales Array dargestellt, welches bei 0 beginnt! Demnach muss von dem Input der Spiellogik -1 genommen werden (col 1 in Spielalgorithmus ist 0 in Hardwaresteuerung).
