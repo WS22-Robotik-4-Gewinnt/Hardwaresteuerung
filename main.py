@@ -52,13 +52,13 @@ class Winner(BaseModel):
 # Thread for Difficulty
 def diffi_Thread():
   global diffi
-  while True:
+  t = threading.currentThread()
+  while getattr(t, "run", True):
     try:
       if readyButton.is_pressed:
         difficulty = '{"difficulty": ' + str(diffi) + '}'
         difficulty = json.loads(difficulty)
-        result = requests.post("http://localhost:8090/ready", json=difficulty)
-        print(f"JSON SEND + {difficulty}")
+        requests.post("http://localhost:8090/ready", json=difficulty)
         sleep(1)
       if difficultyButton.is_pressed:
         diffi += 1
@@ -72,8 +72,9 @@ def diffi_Thread():
       GPIO.cleanup()
 
 
-t1 = threading.Thread(target=diffi_Thread, args=[])
-t1.start()
+difficultyThread = threading.Thread(target=diffi_Thread, args=[])
+difficultyThread.start()
+
 
 Device.pin_factory = PiGPIOFactory()
 app = FastAPI()
@@ -111,10 +112,11 @@ async def move(positions: Positions):
 
 @app.post("/end")
 def endGame(winner: Winner):
+  difficultyThread.run = False
   with canvas(virtual) as draw:
     text(draw, (0, 1), str(winner.winner), fill="white", font=proportional(LCD_FONT))
   sleep(3)
-  print(f"WINNER IS: {winner.winner}")
+  difficultyThread.run = True
 
 
 @app.post("/movePerAngle")
