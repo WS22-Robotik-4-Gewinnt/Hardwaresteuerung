@@ -53,6 +53,7 @@ class Winner(BaseModel):
 def diffi_Thread():
   global diffi
   t = threading.currentThread()
+  print("THREAD RUNNING")
   while getattr(t, "run", True):
     try:
       if readyButton.is_pressed:
@@ -70,6 +71,8 @@ def diffi_Thread():
 
     except KeyboardInterrupt:
       GPIO.cleanup()
+  print("THREAD STOPPED")
+
 
 
 difficultyThread = threading.Thread(target=diffi_Thread, args=[])
@@ -113,6 +116,7 @@ async def move(positions: Positions):
 @app.post("/end")
 def endGame(winner: Winner):
   global difficultyThread
+  print("STOP THREAD")
   difficultyThread.run = False
   with canvas(virtual) as draw:
     text(draw, (0, 1), str(winner.winner), fill="white", font=proportional(LCD_FONT))
