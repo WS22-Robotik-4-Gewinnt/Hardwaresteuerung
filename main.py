@@ -53,8 +53,8 @@ class Winner(BaseModel):
 def diffi_Thread():
   global diffi
   t = threading.currentThread()
-  print("THREAD RUNNING")
   while getattr(t, "run", True):
+    print("THREAD RUNNING")
     try:
       if readyButton.is_pressed:
         difficulty = '{"difficulty": ' + str(diffi) + '}'
