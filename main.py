@@ -1,4 +1,7 @@
+import threading
 import json
+
+import GPIO as GPIO
 from gpiozero import AngularServo, Button, Device
 from gpiozero.pins.pigpio import PiGPIOFactory
 from time import sleep
@@ -21,7 +24,17 @@ import logging
 LOG = "logging_data.log"
 logging.basicConfig(filename=LOG, filemode="w", level=logging.DEBUG)
 
-actualFingerAngle = 0
+diffi = 1
+readyButton = Button(21)
+difficultyButton = Button(26)
+
+dict = {
+  1: 'Kids',
+  2: 'Leicht',
+  3: 'Mittel',
+  4: 'Schwer',
+  5: '42'
+}
 
 serial = spi(port=0, device=0, gpio=noop())
 device = max7219(serial, width=32, height=8, block_orientation=-90)
@@ -37,6 +50,31 @@ class Positions(BaseModel):
 class Winner(BaseModel):
   winner: str
 
+# Thread for Difficulty
+def diffi_Thread():
+  global diffi
+  while True:
+    try:
+      if readyButton.is_pressed:
+        difficulty = '{"difficulty": ' + str(diffi) + '}'
+        difficulty = json.loads(difficulty)
+        result = requests.post("http://localhost:8090/ready", json=difficulty)
+        print(f"JSON SEND + {difficulty}")
+        sleep(1)
+      if difficultyButton.is_pressed:
+        diffi += 1
+        if diffi > 5:
+          diffi = 1
+        sleep(0.5)
+      with canvas(virtual) as draw:
+        text(draw, (0, 1), dict.get(diffi), fill="white", font=proportional(LCD_FONT))
+
+    except KeyboardInterrupt:
+      GPIO.cleanup()
+
+
+t1 = threading.Thread(target=diffi_Thread, args=[])
+t1.start()
 
 Device.pin_factory = PiGPIOFactory()
 app = FastAPI()
@@ -75,7 +113,7 @@ async def move(positions: Positions):
 @app.post("/end")
 def endGame(winner: Winner):
   with canvas(virtual) as draw:
-    text(draw, (0, 1), "test", fill="white", font=proportional(LCD_FONT))
+    text(draw, (0, 1), str(winner.winner), fill="white", font=proportional(LCD_FONT))
   sleep(3)
   print(f"WINNER IS: {winner.winner}")
 
