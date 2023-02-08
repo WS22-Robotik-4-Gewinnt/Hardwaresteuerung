@@ -1,3 +1,6 @@
+docker build -t hardware .
+docker run --device /dev/gpiomem -d -p 8096:8096 hardware ->only Device like GPIO
+docker run --privileged -d -p 8096:8096 hardware ->full Acces
 # Hardwaresteuerung
 Mitwirkende:
 - Michael Hopp
