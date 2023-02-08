@@ -1,12 +1,10 @@
-docker build -t hardware .
-docker run --device /dev/gpiomem -d -p 8096:8096 hardware ->only Device like GPIO
-docker run --privileged -d -p 8096:8096 hardware ->full Acces
 # Hardwaresteuerung
 Mitwirkende:
 - Michael Hopp
 - Niclas Jarowsky
 - Ammar Morshed
 - Adrian Petzold
+- Frieder Ullmann (Docker)
 
 ## Hardware Aufbau
 - Roboterarm mit 4 Servomotoren (Servos werden gemäß ihrer Position/Wirkung bezeichnet: **Schulter**/Oberarm, **Ellenbogen**/Unterarm, **Handgelenk**/Hand und Finger/**Stift**)
@@ -65,6 +63,13 @@ Das Spielfeld der Hardwaresteuerung wird als ein zweidimensionales Array dargest
 ### Fast API starten
 ```commandline
 uvicorn src.main:app --reload --host 0.0.0.0 --port 8096
+```
+
+### Docker bauen und starten
+```commandline
+docker build -t hardware .
+docker run --device /dev/gpiomem -d -p 8096:8096 hardware
+docker run --privileged -d -p 8096:8096 hardware
 ```
 
 ## Projektverlauf
