@@ -52,22 +52,18 @@ def diffi_Thread():
   t = threading.currentThread()
   while True:
     while getattr(t, "run", True):
-      try:
-        if readyButton.is_pressed:
-          difficulty = '{"difficulty": ' + str(diffi) + '}'
-          difficulty = json.loads(difficulty)
-          requests.post(target_ip + ":8090/ready", json=difficulty)
-          sleep(1)
-        if difficultyButton.is_pressed:
-          diffi += 1
-          if diffi > 5:
-            diffi = 1
-          sleep(0.5)
-        with canvas(virtual) as draw:
-          text(draw, (0, 1), dict.get(diffi), fill="white", font=proportional(LCD_FONT))
-
-
-
+      if readyButton.is_pressed:
+        difficulty = '{"difficulty": ' + str(diffi) + '}'
+        difficulty = json.loads(difficulty)
+        requests.post(target_ip + ":8090/ready", json=difficulty)
+        sleep(1)
+      if difficultyButton.is_pressed:
+        diffi += 1
+        if diffi > 5:
+          diffi = 1
+        sleep(0.5)
+      with canvas(virtual) as draw:
+        text(draw, (0, 1), dict.get(diffi), fill="white", font=proportional(LCD_FONT))
 
 difficultyThread = threading.Thread(target=diffi_Thread, args=[])
 difficultyThread.start()
