@@ -93,8 +93,7 @@ oberArm = AngularServo(5, min_angle=-90, max_angle=90, min_pulse_width=0.0006, m
 async def move(positions: Positions):
   goto(x=positions.col, y=positions.row)
   sleep(1)
-  offset = getOffset(y=positions.row)
-  down(offset)
+  down(getOffset(y=positions.row))
   sleep(1)
   wiggle(finger.angle)
   sleep(1)

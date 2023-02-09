@@ -1,10 +1,20 @@
-FROM python:3.8.16-slim-bullseye
+FROM python:3.9
 
-# WORKDIR /src
+WORKDIR /Hardwaresteuerung
 
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
+# Copy project files
+COPY ./requirements.txt /Hardwaresteuerung/requirements.txt
+COPY ./src /Hardwaresteuerung/src
 
-COPY . .
 
-CMD [ "python", "./src/main.py" ]
+# Install python packages
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Update
+# RUN apt-get autoremove && apt-get -f install && apt-get update && apt-get upgrade -y
+
+# Exposed port to access fastapi rest service
+EXPOSE 8096
+
+# Start fastapi on container start
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8096"]
