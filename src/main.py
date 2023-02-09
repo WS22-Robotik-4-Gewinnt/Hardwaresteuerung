@@ -1,6 +1,6 @@
 import threading
 
-import GPIO as GPIO
+
 from gpiozero import AngularServo, Button, Device
 from gpiozero.pins.pigpio import PiGPIOFactory
 from fastapi import FastAPI, Request
@@ -51,22 +51,18 @@ def diffi_Thread():
   t = threading.currentThread()
   while True:
     while getattr(t, "run", True):
-      try:
-        if readyButton.is_pressed:
-          difficulty = '{"difficulty": ' + str(diffi) + '}'
-          difficulty = json.loads(difficulty)
-          requests.post("http://localhost:8090/ready", json=difficulty)
-          sleep(1)
-        if difficultyButton.is_pressed:
-          diffi += 1
-          if diffi > 5:
-            diffi = 1
-          sleep(0.5)
-        with canvas(virtual) as draw:
-          text(draw, (0, 1), dict.get(diffi), fill="white", font=proportional(LCD_FONT))
-
-      except KeyboardInterrupt:
-        GPIO.cleanup()
+      if readyButton.is_pressed:
+        difficulty = '{"difficulty": ' + str(diffi) + '}'
+        difficulty = json.loads(difficulty)
+        requests.post("http://localhost:8090/ready", json=difficulty)
+        sleep(1)
+      if difficultyButton.is_pressed:
+        diffi += 1
+        if diffi > 5:
+          diffi = 1
+        sleep(0.5)
+      with canvas(virtual) as draw:
+        text(draw, (0, 1), dict.get(diffi), fill="white", font=proportional(LCD_FONT))
 
 
 difficultyThread = threading.Thread(target=diffi_Thread, args=[])
@@ -97,9 +93,10 @@ oberArm = AngularServo(5, min_angle=-90, max_angle=90, min_pulse_width=0.0006, m
 async def move(positions: Positions):
   goto(x=positions.col, y=positions.row)
   sleep(1)
-  down(getOffset(y=positions.row))
+  offset = getOffset(y=positions.row)
+  down(offset)
   sleep(1)
-  wiggle(finger.angle)
+  wiggle(finger.angle, offset)
   sleep(1)
   up()
   sleep(0.5)
@@ -165,14 +162,15 @@ def reset():
   finger.angle = 90
   stift.angle = -90
 
-def wiggle(fingerAngle: int):
+def wiggle(fingerAngle: int, offset: float):
   if fingerAngle <= 82:
-    finger.angle = fingerAngle + 8
+    finger.angle = fingerAngle + abs(offset * 8)
     sleep(1)
   else:
     finger.angle = 90
 
   if fingerAngle >= -85:
-    finger.angle = fingerAngle - 6
+    finger.angle = fingerAngle - abs(offset * 5)
+    sleep(1)
   else:
     finger.angle = -90
