@@ -96,7 +96,6 @@ async def move(positions: Positions):
   down(getOffset(y=positions.row))
   sleep(1)
   wiggle(finger.angle)
-  sleep(1)
   up()
   sleep(0.5)
   reset()
