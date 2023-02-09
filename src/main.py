@@ -1,6 +1,6 @@
 import threading
 
-import GPIO as GPIO
+#import GPIO as GPIO
 from gpiozero import AngularServo, Button, Device
 from gpiozero.pins.pigpio import PiGPIOFactory
 from fastapi import FastAPI, Request
@@ -21,6 +21,8 @@ import logging
 LOG = "logging_data.log"
 logging.basicConfig(filename=LOG, filemode="w", level=logging.DEBUG)
 
+
+target_ip = "http://172.17.0.1"
 diffi = 1
 readyButton = Button(21)
 difficultyButton = Button(26)
@@ -55,7 +57,7 @@ def diffi_Thread():
         if readyButton.is_pressed:
           difficulty = '{"difficulty": ' + str(diffi) + '}'
           difficulty = json.loads(difficulty)
-          requests.post("http://localhost:8090/ready", json=difficulty)
+          requests.post(target_ip + ":8090/ready", json=difficulty)
           sleep(1)
         if difficultyButton.is_pressed:
           diffi += 1
@@ -72,7 +74,7 @@ def diffi_Thread():
 difficultyThread = threading.Thread(target=diffi_Thread, args=[])
 difficultyThread.start()
 
-Device.pin_factory = PiGPIOFactory()
+Device.pin_factory = PiGPIOFactory(host='pigpio-deamon', port=8888)
 app = FastAPI()
 
 lookupTable = [[[-20, 55, 2], [-37, 80, -2], [-50, 85, 23], [-59, 86, 43], [-64, 87, 60], [-68, 87, 75]],
