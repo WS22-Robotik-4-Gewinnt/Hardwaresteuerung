@@ -162,15 +162,16 @@ def reset():
   finger.angle = 90
   stift.angle = -90
 
-def wiggle(fingerAngle: int, offset: float):
-  if fingerAngle <= 82:
-    finger.angle = fingerAngle + abs(offset * 8)
+def wiggle(fingerAngle: int):
+  if fingerAngle <= 83:
+    finger.angle = fingerAngle + 7
     sleep(1)
   else:
     finger.angle = 90
 
   if fingerAngle >= -85:
-    finger.angle = fingerAngle - abs(offset * 5)
+    finger.angle = fingerAngle - 5
     sleep(1)
   else:
     finger.angle = -90
+
