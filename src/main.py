@@ -1,6 +1,5 @@
 import threading
 
-#import GPIO as GPIO
 from gpiozero import AngularServo, Button, Device
 from gpiozero.pins.pigpio import PiGPIOFactory
 from fastapi import FastAPI, Request
@@ -67,8 +66,7 @@ def diffi_Thread():
         with canvas(virtual) as draw:
           text(draw, (0, 1), dict.get(diffi), fill="white", font=proportional(LCD_FONT))
 
-      except KeyboardInterrupt:
-        GPIO.cleanup()
+
 
 
 difficultyThread = threading.Thread(target=diffi_Thread, args=[])
@@ -102,7 +100,6 @@ async def move(positions: Positions):
   down(getOffset(y=positions.row))
   sleep(1)
   wiggle(finger.angle)
-  sleep(1)
   up()
   sleep(0.5)
   reset()
@@ -151,7 +148,7 @@ def gotoRaw(ober, unter, fing):
 
 # Stift senken
 def down(offset=0):
-  stift.angle = -27 - offset
+  stift.angle = -26 - offset
 
 # Stift heben
 def up():
@@ -175,6 +172,7 @@ def wiggle(fingerAngle: int):
     finger.angle = 90
 
   if fingerAngle >= -85:
-    finger.angle = fingerAngle - 6
+    finger.angle = fingerAngle - 5
+    sleep(1)
   else:
     finger.angle = -90
